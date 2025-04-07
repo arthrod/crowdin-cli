@@ -1,5 +1,6 @@
 package com.crowdin.cli.utils.http;
 
+import io.github.pixee.security.BoundedLineReader;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,7 @@ class HttpRequest {
             HttpRequest request = new HttpRequest();
             String line;
 
-            line = reader.readLine();
+            line = BoundedLineReader.readLine(reader, 5_000_000);
             if (line != null && !line.equals("")) {
                 String[] firstLine = line.split(" ");
                 if (firstLine.length >= 1) {
@@ -51,7 +52,7 @@ class HttpRequest {
 
             Map<String, String> headers = new HashMap<>();
             while (true) {
-                line = reader.readLine();
+                line = BoundedLineReader.readLine(reader, 5_000_000);
                 if (line == null || line.equals("")) {
                     break;
                 }

@@ -1,5 +1,7 @@
 package com.crowdin.cli;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -8,7 +10,7 @@ public class MockitoUtils {
 
     public static URL getMockUrl(Class<?> clazz) {
         try {
-            return new URL("file://" + clazz.getProtectionDomain().getCodeSource().getLocation().getPath());
+            return Urls.create("file://" + clazz.getProtectionDomain().getCodeSource().getLocation().getPath(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (IOException e) {
             throw new RuntimeException("Couldn't mock url", e);
         }

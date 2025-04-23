@@ -6,6 +6,8 @@ import com.crowdin.client.core.http.exceptions.HttpException;
 import com.crowdin.client.core.model.DownloadLink;
 import com.crowdin.client.core.model.ResponseList;
 import com.crowdin.client.core.model.ResponseObject;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -158,7 +160,7 @@ abstract class CrowdinClientCore {
 
     protected URL url(DownloadLink downloadLink) {
         try {
-            return new URL(downloadLink.getUrl());
+            return Urls.create(downloadLink.getUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (IOException e) {
             throw new RuntimeException("Unexpected exception: malformed download url: " + downloadLink.getUrl(), e);
         }

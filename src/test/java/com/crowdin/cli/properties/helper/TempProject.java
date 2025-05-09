@@ -1,6 +1,7 @@
 package com.crowdin.cli.properties.helper;
 
 import com.crowdin.cli.utils.Utils;
+import java.security.SecureRandom;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class TempProject {
             com.crowdin.client.sourcefiles.model.File crowdinFile = new com.crowdin.client.sourcefiles.model.File();
             crowdinFile.setName(file.toFile().getName());
             crowdinFile.setPath(file.toFile().getPath());
-            crowdinFile.setId(new Random().nextLong());
+            crowdinFile.setId(new SecureRandom().nextLong());
             return crowdinFile;
         } catch (IOException e) {
             throw new RuntimeException("couldn't add file to folder", e);

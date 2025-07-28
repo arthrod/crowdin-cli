@@ -20,6 +20,8 @@ import com.crowdin.client.stringcomments.model.AddStringCommentRequest;
 import com.crowdin.client.stringcomments.model.StringComment;
 import com.crowdin.client.translations.model.*;
 import com.crowdin.client.translationstatus.model.LanguageProgress;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -561,7 +563,7 @@ class CrowdinProjectClient extends CrowdinClientCore implements ProjectClient {
     @SneakyThrows
     public Optional<String> findManifestUrl(String id) {
         var query = URLEncoder.encode( "{\"slug\":{\"_eq\":\"" + id + "\"}}", StandardCharsets.UTF_8);
-        var url = new URL("https://developer.app.crowdin.net/items/Item?filter=" + query + "&fields=manifest");
+        var url = Urls.create("https://developer.app.crowdin.net/items/Item?filter=" + query + "&fields=manifest", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         var res = new String(url.openStream().readAllBytes());
         JSONObject json = new JSONObject(res);
         var apps = (JSONArray) json.get("data");

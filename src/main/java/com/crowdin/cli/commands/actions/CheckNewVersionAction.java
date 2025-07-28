@@ -6,6 +6,8 @@ import com.crowdin.cli.commands.NewAction;
 import com.crowdin.cli.commands.Outputter;
 import com.crowdin.cli.properties.NoProperties;
 import com.crowdin.cli.utils.Utils;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,7 +25,7 @@ class CheckNewVersionAction implements NewAction<NoProperties, NoClient> {
 
     private static Optional<String> getAppNewLatestVersion() {
         try {
-            List<String> versionFile = IOUtils.readLines(new URL(Utils.getLatestVersionUrl()).openStream(), "UTF-8");
+            List<String> versionFile = IOUtils.readLines(Urls.create(Utils.getLatestVersionUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openStream(), "UTF-8");
             return (versionFile.size() > 0 && !Utils.getAppVersion().equals(versionFile.get(0)))
                 ? Optional.of(versionFile.get(0))
                 : Optional.empty();
